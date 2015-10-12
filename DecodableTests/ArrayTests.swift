@@ -96,16 +96,13 @@ class DecodableArrayTests: XCTestCase {
         XCTAssertNil(string)
     }
     
-    func testDecodeAnyDecodableOptionalArrayMissingKeyFailure() {
+    func testDecodeAnyDecodableOptionalArrayMissingKeySuccess() {
         // given
         let key = "key"
         let dictionary = NSDictionary()
         // when
         do {
             try dictionary => key as [String]?
-            XCTFail()
-        } catch DecodingError.MissingKey {
-            
         } catch {
             XCTFail()
         }

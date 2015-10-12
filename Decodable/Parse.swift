@@ -41,6 +41,41 @@ public func parse<T>(json: AnyObject, path: [String], decode: (AnyObject throws 
     
 }
 
+public func parse<T>(json: AnyObject, path: [String], decode: (AnyObject throws -> T)) throws -> T? {
+    
+    var object = json
+    
+    if let lastKey = path.last {
+        var path = path
+        path.removeLast()
+        
+        var currentDict = try NSDictionary.decode(json)
+        var currentPath: [String] = []
+        
+        func objectForKey(dictionary: NSDictionary, key: String) -> AnyObject? {
+            guard let result = dictionary[key] where !(result is NSNull) else {
+                return nil
+            }
+            return result
+        }
+        
+        for key in path {
+            guard let value = objectForKey(currentDict, key: key) else {
+                return nil
+            }
+            currentDict = try NSDictionary.decode(value)
+            currentPath.append(key)
+        }
+        
+        guard let o = objectForKey(currentDict, key: lastKey) else {
+            return nil
+        }
+        object = o
+    }
+    
+    return try catchAndRethrow(json, path) { try decode(object) }
+    
+}
 
 // MARK: - Helpers
 
