@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum DecodingError: ErrorType, CustomDebugStringConvertible {
+public enum DecodingError: ErrorType, CustomStringConvertible {
     
     public struct Info {
         
@@ -55,7 +55,7 @@ public enum DecodingError: ErrorType, CustomDebugStringConvertible {
         }
     }
     
-    public var debugDescription: String {
+    public var description: String {
         switch self {
         case .MissingKey(let key, let info):
             return "Missing Key \(key) in \(info.formattedPath) \(info.object)"
