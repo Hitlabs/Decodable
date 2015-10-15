@@ -29,6 +29,7 @@ public enum DecodingError: ErrorType, CustomDebugStringConvertible {
     
     case MissingKey(key: String, info: Info)
     case TypeMismatch(type: Any.Type, expectedType: Any.Type, info: Info)
+    case ConversionError(msg: String, key: String, info: Info)
     
     var info: Info {
         get {
@@ -36,6 +37,8 @@ public enum DecodingError: ErrorType, CustomDebugStringConvertible {
             case MissingKey(key: _, let info):
                 return info
             case TypeMismatch(_, _, let info):
+                return info
+            case ConversionError(_, _, let info):
                 return info
             }
         }
@@ -45,7 +48,10 @@ public enum DecodingError: ErrorType, CustomDebugStringConvertible {
                 self = MissingKey(key: key, info: newValue)
             case TypeMismatch(let type, let expectedType, _):
                 self = TypeMismatch(type: type, expectedType: expectedType, info: newValue)
+            case ConversionError(let msg, let key, _):
+                self = ConversionError(msg: msg, key: key, info: newValue)
             }
+            
         }
     }
     
@@ -55,6 +61,8 @@ public enum DecodingError: ErrorType, CustomDebugStringConvertible {
             return "Missing Key \(key) in \(info.formattedPath) \(info.object)"
         case .TypeMismatch(let type, let expectedType, let info):
             return "TypeMismatch \(type), expected: \(expectedType) in \(info.formattedPath) object: \(info.object)"
+        case .ConversionError(let msg, let key, let info):
+            return "Conversion Error \(msg), key: \(key) in \(info.formattedPath) object: \(info.object)"
         }
     }
 }
