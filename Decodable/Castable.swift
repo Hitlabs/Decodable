@@ -31,6 +31,9 @@ private func decodeNumeric<T>(j: AnyObject, primitiveClosure: (number: NSNumber)
     if let result = j as? T {
         return result
     }
+    if let result = j as? NSNumber {
+        return primitiveClosure(number: result)
+    }
     if let string = j as? String, result = numberFormatter.numberFromString(string) {
         return primitiveClosure(number: result)
     }
