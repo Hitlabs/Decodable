@@ -44,6 +44,11 @@ extension Int: Castable {
         return try decodeNumeric(j) { $0.integerValue }
     }
 }
+extension Int64: Castable {
+    public static func decode(j: AnyObject) throws -> Int64 {
+        return try decodeNumeric(j) { $0.longLongValue }
+    }
+}
 extension Double: Castable {
     public static func decode(j: AnyObject) throws -> Double {
         return try decodeNumeric(j) { $0.doubleValue }
